@@ -97,18 +97,22 @@ install_dotfiles() {
   done
 }
 
-print "(1/4) Installing dependencies..."
+print "(1/5) Installing dependencies..."
 sh dependencies.sh
 
-print "(2/4) Installing dotfiles..."
+print "(2/5) Installing dotfiles..."
 install_dotfiles
 
-print "(3/4) Starting yabai..."
+print "(3/5) Starting yabai..."
 yabai --start-service
 yabai --restart-service
 
-print "(4/4) Start skhd..."
+print "(4/5) Start skhd..."
 skhd --start-service
 skhd --restart-service
 
+print "(5/5) Applying MacOS settings..."
+sh macos-settings.sh
+
 success "Bootstrapped successfully!"
+success "Some changes may require a restart"
