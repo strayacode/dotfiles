@@ -97,4 +97,18 @@ install_dotfiles() {
   done
 }
 
+print "(1/4) Installing dependencies..."
+sh dependencies.sh
+
+print "(2/4) Installing dotfiles..."
 install_dotfiles
+
+print "(3/4) Starting yabai..."
+yabai --start-service
+yabai --restart-service
+
+print "(4/4) Start skhd..."
+skhd --start-service
+skhd --restart-service
+
+success "Bootstrapped successfully!"
