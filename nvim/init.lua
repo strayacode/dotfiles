@@ -155,12 +155,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- Default indentation settings
-vim.opt.expandtab = true -- Pressing the tab key will insert spaces instead of a tab character
-vim.opt.tabstop = 4 -- A tab character will be 4 spaces
-vim.opt.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
-vim.opt.shiftwidth = 4 -- Number of spaces inserted when indenting
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -211,13 +205,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'sh',
-  callback = function()
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.tabstop = 2
-  end,
-})
+local function set_indentation(filetype, indent_size)
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = filetype,
+    callback = function()
+      vim.opt_local.shiftwidth = indent_size
+      vim.opt_local.tabstop = indent_size
+      vim.opt_local.softtabstop = indent_size
+      vim.opt_local.expandtab = true
+    end,
+  })
+end
+
+set_indentation('sh', 2)
+set_indentation('lua', 2)
+set_indentation('c', 4)
+set_indentation('cpp', 4)
 
 -- Default indentation settings
 vim.opt_local.expandtab = true -- Pressing the tab key will insert spaces instead of a tab character
@@ -247,8 +250,6 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -897,9 +898,6 @@ require('lazy').setup({
     },
   },
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
 
 require('oil').setup()
 vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
