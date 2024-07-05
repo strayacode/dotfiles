@@ -25,10 +25,10 @@ background = "#1a1b26"
 foreground = "#a9b1d6"
 
 [font]
-size = 16.0
+size = 14.0
 
 [font.normal]
-family = "Menlo"
+family = "Akkurat-Mono"
 style = "Regular"
 
 [window]
